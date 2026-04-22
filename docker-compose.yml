@@ -57,10 +57,8 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD:-evoai_redis_pass}@redis:6379/1
       POSTGRES_HOST: postgres
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - postgres
+      - redis
     command: bash -c "bundle install && bundle exec rails db:prepare && bundle exec rails s -p 3001 -b 0.0.0.0"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
@@ -80,10 +78,8 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD:-evoai_redis_pass}@redis:6379/1
       POSTGRES_HOST: postgres
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - postgres
+      - redis
     command: bash -c "bundle install && bundle exec sidekiq"
 
   # ---------------------------------------------------------------------------
@@ -116,12 +112,9 @@ services:
       - crm_node_modules:/app/node_modules
       - crm_cache:/app/tmp/cache
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      evo-auth:
-        condition: service_healthy
+      - postgres
+      - redis
+      - evo-auth
     entrypoint: docker/entrypoints/rails.sh
     command: ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
     healthcheck:
@@ -156,10 +149,8 @@ services:
       - crm_node_modules:/app/node_modules
       - crm_cache:/app/tmp/cache
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - postgres
+      - redis
     entrypoint: docker/entrypoints/rails.sh
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
 
@@ -186,8 +177,7 @@ services:
       EVO_AUTH_BASE_URL: http://evo-auth:3001
       AI_PROCESSOR_URL: http://evo-processor:8000
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5555/api/v1/health"]
       interval: 15s
@@ -219,10 +209,8 @@ services:
     volumes:
       - processor_logs:/app/logs
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      - postgres
+      - redis
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
@@ -247,10 +235,8 @@ services:
       AI_PROCESSOR_URL: http://evo-processor:8000
       BOT_RUNTIME_SECRET: ${BOT_RUNTIME_SECRET:-evo-bot-runtime-dev-secret}
     depends_on:
-      redis:
-        condition: service_healthy
-      evo-processor:
-        condition: service_healthy
+      - redis
+      - evo-processor
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
       interval: 15s
@@ -280,10 +266,8 @@ services:
     ports:
       - "5173:80"
     depends_on:
-      evo-auth:
-        condition: service_healthy
-      evo-crm:
-        condition: service_healthy
+      - evo-auth
+      - evo-crm
     healthcheck:
       test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80/health"]
       interval: 15s
