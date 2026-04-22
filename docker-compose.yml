@@ -260,8 +260,10 @@ services:
     ports:
       - "5174:80"
     networks:
-      - default
-      - dokploy-network
+      default:
+      dokploy-network:
+        aliases:
+          - evo-frontend
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.crm-frontend.rule=Host(`crm.wsgestao.digital`)"
