@@ -263,6 +263,14 @@ services:
     networks:
       - default
       - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.crm-frontend.rule=Host(`crm.wsgestao.digital`)"
+      - "traefik.http.routers.crm-frontend.entrypoints=websecure"
+      - "traefik.http.routers.crm-frontend.tls=true"
+      - "traefik.http.routers.crm-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.crm-frontend.loadbalancer.server.port=80"
+      - "traefik.docker.network=dokploy-network"
     depends_on:
       - evo-auth
       - evo-crm
