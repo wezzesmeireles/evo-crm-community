@@ -259,17 +259,6 @@ services:
       VITE_AGENT_PROCESSOR_URL: ${VITE_AGENT_PROCESSOR_URL:-http://localhost:8000}
     ports:
       - "5174:80"
-    networks:
-      default:
-      dokploy-network:
-        aliases:
-          - evo-frontend
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.crm-frontend.rule=Host(`crm.wsgestao.digital`)"
-      - "traefik.http.routers.crm-frontend.entrypoints=web"
-      - "traefik.http.services.crm-frontend.loadbalancer.server.port=80"
-      - "traefik.docker.network=dokploy-network"
     depends_on:
       - evo-auth
       - evo-crm
@@ -287,6 +276,3 @@ volumes:
   crm_cache:
   processor_logs:
 
-networks:
-  dokploy-network:
-    external: true
