@@ -262,6 +262,11 @@ services:
     networks:
       - default
       - dokploy-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.evo-frontend.rule=Host(`crm-crmevoaa-jfrusg-5b3717-185-205-244-100.traefik.me`)"
+      - "traefik.http.routers.evo-frontend.entrypoints=web,websecure"
+      - "traefik.http.services.evo-frontend.loadbalancer.server.port=80"
     depends_on:
       - evo-auth
       - evo-crm
