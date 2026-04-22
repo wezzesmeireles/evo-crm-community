@@ -259,6 +259,9 @@ services:
       VITE_AGENT_PROCESSOR_URL: ${VITE_AGENT_PROCESSOR_URL:-http://localhost:8000}
     ports:
       - "5174:80"
+    networks:
+      - default
+      - dokploy-network
     depends_on:
       - evo-auth
       - evo-crm
@@ -275,3 +278,7 @@ volumes:
   crm_bundle:
   crm_cache:
   processor_logs:
+
+networks:
+  dokploy-network:
+    external: true
