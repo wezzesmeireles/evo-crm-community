@@ -242,6 +242,7 @@ services:
   # Frontend (React / Vite / Nginx) — Port 5173
   # ---------------------------------------------------------------------------
   evo-frontend:
+    container_name: evo-frontend
     build:
       context: https://github.com/EvolutionAPI/evo-ai-frontend-community.git
       dockerfile: Dockerfile
