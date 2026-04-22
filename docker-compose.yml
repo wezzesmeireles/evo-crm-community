@@ -258,7 +258,7 @@ services:
       VITE_EVOAI_API_URL: ${VITE_EVOAI_API_URL:-http://localhost:5555}
       VITE_AGENT_PROCESSOR_URL: ${VITE_AGENT_PROCESSOR_URL:-http://localhost:8000}
     ports:
-      - "5174:80"
+      - "8080:80"
     depends_on:
       - evo-auth
       - evo-crm
